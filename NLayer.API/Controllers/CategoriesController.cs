@@ -4,7 +4,6 @@ using NLayer.Core.Service;
 
 namespace NLayer.API.Controllers
 {
-    [ValidateFilterAttribute]
     public class CategoriesController : CustomBaseController
     {
         private readonly ICategoryService _categoryService;
