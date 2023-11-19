@@ -7,7 +7,7 @@ using NLayer.Core.Repositories;
 using NLayer.Core.Service;
 using NLayer.Core.UnitOfWorks;
 using NLayer.Services.Exceptions;
-using System.Linq.Expressions;
+using System.Linq.Expressions; 
 
 namespace NLayer.Caching
 {
@@ -27,9 +27,9 @@ namespace NLayer.Caching
             _memoryCache = memoryCache;
             _mapper = mapper;
 
-            if(_memoryCache.TryGetValue(CacheProductKey, out _))
+            if (!_memoryCache.TryGetValue(CacheProductKey, out _))
             {
-                _memoryCache.Set(CacheProductKey, _repository.GetProductsWithCategory());
+                _memoryCache.Set(CacheProductKey, _repository.GetProductsWithCategory().Result);
             }
         }
 
@@ -56,7 +56,8 @@ namespace NLayer.Caching
 
         public Task<IEnumerable<Product>> GetAllAsync()
         {
-            return Task.FromResult(_memoryCache.Get<IEnumerable<Product>>(CacheProductKey));
+            var data = _memoryCache.Get<IEnumerable<Product>>(CacheProductKey);
+            return Task.FromResult(data);
         }
 
         public Task<Product> GetByIdAsync(int id)
